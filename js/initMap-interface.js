@@ -2,20 +2,20 @@ var apiKey = require('./../.env').apiKey;
 var converter = require('./../js/temperatureConverter-interface.js').converter;
 
 exports.initMap = function(position) {
-   var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-   var myOptions = {
-      center: userLatLng,
-      zoom: 8,
-      mapTypeId : google.maps.MapTypeId.SATELLITE
-      };
+  var userLatLng = new google.maps.LatLng(position.coords.latitude,     position.coords.longitude);
+  var myOptions = {
+    center: userLatLng,
+    zoom: 8,
+    mapTypeId : google.maps.MapTypeId.SATELLITE
+    };
 
   var mapObject = new google.maps.Map(document.getElementById('showMap'), myOptions);
 
-    new google.maps.Marker({
-      map: mapObject,
-      position: userLatLng,
-      title: input
-    });
+  new google.maps.Marker({
+    map: mapObject,
+    position: userLatLng,
+    title: input
+  });
 
     // google maps search box
     // Create the search box and link it to the UI element.
@@ -72,6 +72,8 @@ exports.initMap = function(position) {
           bounds.extend(place.geometry.location);
         }
       });
+
+
       mapObject.fitBounds(bounds);
       city = userInput[0].address_components[0].long_name;
 
@@ -83,10 +85,11 @@ exports.initMap = function(position) {
            })
         // var temps = convertTemperature(response.main.temp);
         .then(function(forecast){
+  
           var forecasts = [];
-          forecast.list.forEach(function(index) {
-            forecasts.push("<p>" + index.dt_txt +": </p>" + "<ul><li>" + index.weather[0].description + "<br />" + converter(index.main.temp) + " F" + "</li></ul>");
-          });
+          for(var i = 0; i < forecast.list.length; i+=8) {
+            forecasts.push("<p>" + forecast.list[i].dt_txt +": </p>" + "<ul><li>" + forecast.list[i].weather[0].description + "<br />" + converter(forecast.list[i].main.temp) + " F" + "</li></ul>");
+          };
 
           var contentString = "<p>The temperature in " + userInput[0].address_components[0].long_name + " is " + converter(currentWeather.main.temp) + "F" + "</br>" + "Current weather condition is " + currentWeather.weather[0].description + "</p> <p> The forecast for " + forecast.city.name + " is:" + "</p>" + forecasts[0] + forecasts[1] + forecasts[2] + forecasts[3] + forecasts[4];
 
@@ -106,4 +109,4 @@ exports.initMap = function(position) {
     });
     return initMap;
 
-  };
+};

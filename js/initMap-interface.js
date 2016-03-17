@@ -85,13 +85,13 @@ exports.initMap = function(position) {
            })
         // var temps = convertTemperature(response.main.temp);
         .then(function(forecast){
-  
+
           var forecasts = [];
           for(var i = 0; i < forecast.list.length; i+=8) {
-            forecasts.push("<p>" + forecast.list[i].dt_txt +": </p>" + "<ul><li>" + forecast.list[i].weather[0].description + "<br />" + converter(forecast.list[i].main.temp) + " F" + "</li></ul>");
+            forecasts.push("<p>" +  moment(forecast.list[i].dt_txt).format("MM/DD/YYYY") +": </p>" + "<ul><li>" + forecast.list[i].weather[0].description + "<br />" + converter(forecast.list[i].main.temp) + " F" + "</li></ul>");
           };
 
-          var contentString = "<p>The temperature in " + userInput[0].address_components[0].long_name + " is " + converter(currentWeather.main.temp) + "F" + "</br>" + "Current weather condition is " + currentWeather.weather[0].description + "</p> <p> The forecast for " + forecast.city.name + " is:" + "</p>" + forecasts[0] + forecasts[1] + forecasts[2] + forecasts[3] + forecasts[4];
+          var contentString = "<p>The temperature in " + userInput[0].address_components[0].long_name + " is " + converter(currentWeather.main.temp) + "F" + "</br>" + "Current weather condition is " + currentWeather.weather[0].description + "</p> <p> The 5 forecast for " + forecast.city.name + " is:" + "</p>" + forecasts[0] + forecasts[1] + forecasts[2] + forecasts[3] + forecasts[4];
 
 
           console.log(JSON.stringify(forecast));
